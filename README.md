@@ -1,5 +1,4 @@
 # Docker-pure-ftpd
-
 Setup your pure-ftpd quickly
 This docker allows you to customize your pure-ftpd with 2 different modes
   - FILEMODE=TRUE -> using files configuration

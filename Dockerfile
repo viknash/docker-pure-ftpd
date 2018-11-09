@@ -2,6 +2,9 @@ FROM debian:jessie
 
 # feel free to change this ;)
 MAINTAINER Cyril Moreau <cyril.moreauu@gmail.com>
+
+ARG FTP_USERNAME=username
+ARG FTP_PASSWORD=password
 # properly setup debian sources
 ENV DEBIAN_FRONTEND noninteractive
 RUN echo "deb http://http.debian.net/debian jessie main\n\
@@ -53,6 +56,12 @@ RUN chmod u+x /run.sh
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # default publichost, you'll need to set this for passive support
 
+#RUN echo "ubuntu:x:1001:1001::/home/ubuntu:/bin/sh" >> /etc/passwd
+#RUN echo "ubuntu:$6$K3tOJ.oN$HCnnKaliF71vMTOhtggv/F1c5BtFiuX1NujzcPDPhPHKOQXaUiVwAXIyWgahcFUISz7LcEkgVzDcRPgutDo2L1:17839:0:99999:7:::" >> /etc/shadow
+
+RUN useradd $FTP_USERNAME
+RUN echo $FTP_USERNAME:$FTP_PASSWORD | chpasswd
+
 # couple available volumes you may want to use
 VOLUME ["/home/ftpusers", "/etc/pure-ftpd/"]
 
@@ -60,3 +69,4 @@ VOLUME ["/home/ftpusers", "/etc/pure-ftpd/"]
 # with added secure defaults, ref: https://github.com/stilliard/docker-pure-ftpd/issues/10
 CMD ["/usr/bin/supervisord"]
 EXPOSE 21 
+
